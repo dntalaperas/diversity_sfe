@@ -70,6 +70,7 @@ public class RESTController {
                         log.info("Found not delivered post");
                         posts.add(post);
                         post.setIsDelivered(1);
+                        postDAOTest.save(post);
                     }
                 }
                 groupDAO.save(group);
@@ -131,7 +132,7 @@ public class RESTController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value="/retrievePostsTriggered", method = RequestMethod.GET)
+    @RequestMapping(value="/forcePostRetrieval", method = RequestMethod.GET)
     public ResponseEntity<Void> retrievePostsTriggered() {
         log.info("Retrieving posts...");
         List<Group> groupList = groupDAO.findAll();

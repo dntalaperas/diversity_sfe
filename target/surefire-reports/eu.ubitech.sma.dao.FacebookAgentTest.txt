@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: eu.ubitech.sma.dao.FacebookAgentTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.262 sec - in eu.ubitech.sma.dao.FacebookAgentTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.243 sec - in eu.ubitech.sma.dao.FacebookAgentTest

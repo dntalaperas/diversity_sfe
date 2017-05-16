@@ -1,15 +1,8 @@
 package eu.ubitech.sma.aggregator.agent;
 
 import com.google.common.base.CharMatcher;
-import facebook4j.Facebook;
-import facebook4j.FacebookException;
-import facebook4j.FacebookFactory;
-import facebook4j.PagableList;
-import facebook4j.Paging;
-import facebook4j.Post;
-import facebook4j.Reading;
-import facebook4j.ResponseList;
-import facebook4j.User;
+import facebook4j.*;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +12,7 @@ import eu.ubitech.sma.repository.dao.IndividualDAO;
 import eu.ubitech.sma.repository.domain.Group;
 import eu.ubitech.sma.repository.domain.Individual;
 import eu.ubitech.sma.repository.domain.Profile;
-import facebook4j.Comment;
-import facebook4j.Ordering;
+
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -200,6 +192,14 @@ public class FacebookAgent implements AgentService {
                     //String createdTime = sdf.format(post.getCreatedTime()).toString();
                     String postID = post.getId().split("_")[1];
 
+                    IdNameEntity locationEntity = facebookUser.getLocation();
+                    String location = locationEntity == null ? "" : locationEntity.getName();
+                    String gender = facebookUser.getGender();
+                    String birthday = facebookUser.getBirthday();
+
+                    tmpPost.setLocation(location);
+                    tmpPost.setGender(gender);
+                    tmpPost.setAge(birthday);
                     tmpPost.setProfile(group.getProfile());
                     tmpPost.setContentId(postID);
                     tmpPost.setUserId(Long.parseLong(facebookUser.getId()));
@@ -208,6 +208,7 @@ public class FacebookAgent implements AgentService {
                     tmpPost.setContent((post.getMessage() == null ? "" : post.getMessage()));
                     tmpPost.setEpoch(post.getCreatedTime().getTime());
                     tmpPost.setIsOwner(isPageOwner);
+                    tmpPost.setIsDelivered(0);
                     posts.add(tmpPost);
 
                     //Increase the number of fetched posts
@@ -220,6 +221,7 @@ public class FacebookAgent implements AgentService {
                         Set<eu.ubitech.sma.repository.domain.Comment> comments = new HashSet(0);
 
                         for (Comment postComment : postComments) {
+
                             //LOGGER.info("saving comment: " + postComment.getMessage());
                             eu.ubitech.sma.repository.domain.Comment comment = new eu.ubitech.sma.repository.domain.Comment();
                             comment.setComment(CharMatcher.ASCII.retainFrom(postComment.getMessage()));

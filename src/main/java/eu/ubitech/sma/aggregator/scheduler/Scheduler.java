@@ -35,7 +35,7 @@ public class Scheduler {
     @Autowired
     AgentFactory agentFactory;
 
-    //@Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 36000000)
     public void retrievePosts() {
         log.info("Retrieving posts...");
         List<Group> groupList = groupDAO.findAll();

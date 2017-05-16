@@ -31,6 +31,11 @@ public class Comment  implements Serializable {
      private String sentimentIrony;
      private String jsonContent;
 
+    /*Appended profile characteristics to circumvent overflow while saving cycled relations*/
+    private String location;
+    private String age;
+    private String gender;
+
     public Comment() {
     }
 
@@ -71,6 +76,29 @@ public class Comment  implements Serializable {
         this.id = id;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public Post getPost() {
         return this.post;

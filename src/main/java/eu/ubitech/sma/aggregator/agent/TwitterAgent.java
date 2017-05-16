@@ -162,7 +162,7 @@ public class TwitterAgent implements AgentService {
         long firstPostEpoch = -1;
         long currentPostEpoch = 0;
         long sincePostEpoch = (group.getSince() <= 0 ? this.defaultDate.getTime() : group.getSince());
-        int postsPERquery = 100;
+        int postsPERquery = 10;
         long min = 0L;
         query.setMaxId(min);
         boolean stopFetching = false;
@@ -204,14 +204,14 @@ public class TwitterAgent implements AgentService {
                         } else {
                             Logger.getLogger(TwitterAgent.class.getName()).log(Level.INFO, "Retrieving personal info for Username: " + (status.getUser().getScreenName() != null ? status.getUser().getScreenName() : "<NULL>") + " with UserID: " + status.getUser().getId());
                             individual = new Individual();
-                            individual.setProfile(group.getProfile());
+                            /*individual.setProfile(group.getProfile());
                             individual.setGroup(group);
                             individual.setProfileType(group.getProfile().getProfileType());
                             individual.setUserId(status.getUser().getId());
                             individual.setFullname(status.getUser().getName());
                             individual.setLocation(CharMatcher.ASCII.retainFrom(status.getUser().getLocation()));
                             individual.setScreenName(status.getUser().getScreenName());
-                            individual.setProfileImageUrl(twitterUser.getBiggerProfileImageURL());
+                            individual.setProfileImageUrl(twitterUser.getBiggerProfileImageURL());*/
 
                             //Save current users' demographic data
                             twitterEntities.put(status.getUser().getId(), individual);

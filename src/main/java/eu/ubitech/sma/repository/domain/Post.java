@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Post implements java.io.Serializable {
 
     private String id;
+    private Integer isDelivered;
     private PostMeta postMeta;
     private Group group;
     private Profile profile;
@@ -28,6 +29,13 @@ public class Post implements java.io.Serializable {
     private String sentimentSubjectivity;
     private String sentimentIrony;
     private String jsonContent;
+
+    /*Appended profile characteristics to circumvent overflow while saving cycled relations*/
+    private String location;
+    private String age;
+    private String gender;
+
+
     private Set comments = new HashSet(0);
 
     public Post() {
@@ -75,6 +83,46 @@ public class Post implements java.io.Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getIsDelivered() {
+        return isDelivered;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setIsDelivered(Integer isDelivered) {
+        this.isDelivered = isDelivered;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 
     public PostMeta getPostMeta() {

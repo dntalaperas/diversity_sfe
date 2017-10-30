@@ -42,7 +42,7 @@ public class FacebookAgent implements AgentService {
     private final String AppID;
     private final String AppSecret;
 
-    private final int maxPosts = 100;
+    private final int maxPosts = 5;
 
     private static final Logger LOGGER = Logger.getLogger(FacebookAgent.class.getName());
 
@@ -56,7 +56,7 @@ public class FacebookAgent implements AgentService {
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookAgent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Logger.getLogger(FacebookAgent.class.getName()).log(Level.INFO, "AppID : {0} AppSecret : {1}******", new Object[]{this.AppID, this.AppSecret.subSequence(0, 10)});
+        Logger.getLogger(FacebookAgent.class.getName()).log(Level.INFO, "AppID : {0} AppSecret : {1}******", new Object[]{this.AppID, this.AppSecret.subSequence(0, 20)});
     }
 
     public FacebookAgent() {
@@ -130,7 +130,11 @@ public class FacebookAgent implements AgentService {
         try {
             System.out.println("Since date: " + new Date(since) + " until date: " + new Date(group.getUntil()));
 
-            results = facebook.getFeed(group.getProfile().getName(), new Reading().fields("id", "message", "caption", "description", "created_time", "from", "comments").since(new Date(since)).limit(group.getLimit()).offset(100).order(Ordering.REVERSE_CHRONOLOGICAL));//until(new Date(group.getUntil()))
+            System.out.println("Date since: " + new Date(since));
+            results = facebook.getFeed(group.getProfile().getName(), new Reading().fields("id", "message", "caption", "description", "created_time", "from", "comments")
+                    .until(new Date(since))
+                    .limit(10)
+                    .order(Ordering.REVERSE_CHRONOLOGICAL));//until(new Date(group.getUntil()))
 
             do {
 
@@ -142,24 +146,26 @@ public class FacebookAgent implements AgentService {
                     }
 
                     System.out.println(post.getCreatedTime());
+                    group.setSince(post.getCreatedTime().getTime());
                     isPageOwner = false;
                     isEntityExists = false;
                     //Created time (Java Date) of the current tweet formatted in Linux Epoch Time (long)
-                    stopFetching = (group.getSince() >= 0 && (currentPostEpoch = post.getCreatedTime().getTime()) <= since);
+                    //stopFetching = (group.getSince() >= 0 && (currentPostEpoch = post.getCreatedTime().getTime()) <= since);
                     //Set the time of the first fetched post
-                    if (firstPostEpoch < 0) {
-                        Logger.getLogger(FacebookAgent.class.getName()).log(Level.INFO, "Setting first post epoch@" + currentPostEpoch + " epoch date: {0}", new Date(post.getCreatedTime().getTime()).toString());
+                    //if (firstPostEpoch < 0) {
+                    //    Logger.getLogger(FacebookAgent.class.getName()).log(Level.INFO, "Setting first post epoch@" + currentPostEpoch + " epoch date: {0}", new Date(post.getCreatedTime().getTime()).toString());
                         firstPostEpoch = post.getCreatedTime().getTime();
-                    }
+                    //}
                     //Break loop if interval time match current feteched post created time
-                    if (stopFetching) {
+                    /*if (stopFetching) {
+                        System.out.println("FOUND STOPFETCHING");
                         break;
-                    }
+                    }*/
 
-                    facebookUser = getFacebookClient().getUser(post.getFrom().getId(), new Reading().fields("username,name"));
+                    facebookUser = getFacebookClient().getUser(post.getFrom().getId()/*, new Reading().fields("username,name")*/);
                     //TODO: Proper handle in case a Facebook user does not have a username e.g UserID=100002768292305
                     //Retrieve personal info for all users which post to the group except for the owner of the account (current page)
-                    if (facebookUser != null && facebookUser.getUsername() != null && !(isPageOwner = facebookUser.getUsername().equalsIgnoreCase(group.getProfile().getName()))) {
+                    /*if (facebookUser != null && facebookUser.getUsername() != null && !(isPageOwner = facebookUser.getUsername().equalsIgnoreCase(group.getProfile().getName()))) {
 
                         //Get current facebook user personal info
                         //       if (!isEntityExists && (entityObject = fbscraper.getUserAbooutPage(facebookUser.getUsername())) != null) {
@@ -184,7 +190,7 @@ public class FacebookAgent implements AgentService {
                     } else {
                         //  Logger.getLogger(FacebookAgent.class.getName()).log(Level.INFO, (facebookUser != null ? "Skipping personal info retrieval for user: " + facebookUser.getUsername() + " because is the owner of the account: @" + group.getProfile().getName() : "Skipping entity for user: " + facebookUser.getUsername() + " could not retrieve personal info (User object is null)"));
                     }
-
+*/
                     //Take into account only posts which are not belong to the owner of the account (current page)
                     //Increase the number of fetched posts
                     tmpPost = new eu.ubitech.sma.repository.domain.Post();
@@ -235,6 +241,7 @@ public class FacebookAgent implements AgentService {
 
                             if (!facebookEntities.containsKey(comment.getUserId())) {
                                 individual = new Individual();
+
                                 //individual.setProfile(group.getProfile());
                                 //individual.setGroup(group);
                                 //individual.setProfileType(group.getProfile().getProfileType());
@@ -263,7 +270,7 @@ public class FacebookAgent implements AgentService {
                      for (Like like : likes) {
                      System.out.println(like.getName() + ", ");
                      }
-     
+
                      }*/
                 }
 
@@ -286,7 +293,7 @@ public class FacebookAgent implements AgentService {
         }
 
         //Set Group Meta Info
-        group.setSince(firstPostEpoch);
+        //group.setSince(firstPostEpoch);
         group.getPosts().addAll(posts);
         //Set Group Individuals Info
         Set<Individual> individuals = new HashSet(0);

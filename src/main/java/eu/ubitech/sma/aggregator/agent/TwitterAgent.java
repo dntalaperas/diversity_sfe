@@ -182,7 +182,7 @@ public class TwitterAgent implements AgentService {
 
                 for (Status status : results) {
 
-                    twitterUser = status.getUser();
+                    /*twitterUser = status.getUser();
                     //Created time (Java Date) of the current tweet formatted in Linux Epoch Time (long)
                     currentPostEpoch = status.getCreatedAt().getTime();
                     stopFetching = (group.getSince() >= 0 && currentPostEpoch <= sincePostEpoch);
@@ -211,7 +211,7 @@ public class TwitterAgent implements AgentService {
                             individual.setFullname(status.getUser().getName());
                             individual.setLocation(CharMatcher.ASCII.retainFrom(status.getUser().getLocation()));
                             individual.setScreenName(status.getUser().getScreenName());
-                            individual.setProfileImageUrl(twitterUser.getBiggerProfileImageURL());*/
+                            individual.setProfileImageUrl(twitterUser.getBiggerProfileImageURL());
 
                             //Save current users' demographic data
                             twitterEntities.put(status.getUser().getId(), individual);
@@ -220,7 +220,7 @@ public class TwitterAgent implements AgentService {
                     } else {
                         Logger.getLogger(TwitterAgent.class.getName()).log(Level.INFO, (twitterUser != null ? "Skipping personal info retrieval for user: " + twitterUser.getScreenName() + " because is the owner of the account: @" + group.getProfile().getName() : "Skipping entity for user: " + twitterUser.getScreenName() + " could not retrieve personal info (User object is null)"));
                     }
-
+*/
                     //Increase the number of fetched posts
                     group.increasePostNum();
                     tmpPost = new Post();
@@ -251,9 +251,9 @@ public class TwitterAgent implements AgentService {
         //Set Group Posts
         group.setPosts(posts);
         //Set Group Individuals Info
-        Set<Individual> individuals = new HashSet(0);
-        individuals.addAll(twitterEntities.values());
-        group.setIndividuals(matcher.getBestMatchLocation(individuals));
+        //Set<Individual> individuals = new HashSet(0);
+        //individuals.addAll(twitterEntities.values());
+        //group.setIndividuals(matcher.getBestMatchLocation(individuals));
 
         return group;
 

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: eu.ubitech.sma.dao.AgentServiceTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.001 sec - in eu.ubitech.sma.dao.AgentServiceTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0 sec - in eu.ubitech.sma.dao.AgentServiceTest

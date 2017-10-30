@@ -45,6 +45,7 @@ public class RESTController {
         group.setSince(0L);
         group.setUntil(1429997622000L);
         group.setLimit(5);
+        group.setPageNum(0);
         group.setProfile(new Profile(type.substring(0, 1).toUpperCase() + type.substring(1), account));
         try {
             groupDAO.save(group);

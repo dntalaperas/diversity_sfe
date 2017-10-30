@@ -18,6 +18,9 @@ public class Group implements Serializable {
     private long since;
     private long until;
     private int limit;
+
+
+    private int pageNum;
     
     @Transient
     private Set individuals = new HashSet(0);
@@ -50,6 +53,13 @@ public class Group implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 
     public Profile getProfile() {
